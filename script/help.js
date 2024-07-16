@@ -39,7 +39,7 @@ module.exports.run = async function({
       });
       helpMessage += `\nPage ${page}/${Math.ceil(commands.length / pages)}. To view the next page, type '${prefix}help page number'. To view information about a specific command, type '${prefix}help command name'
 
-𝗧𝗛𝗜𝗦 𝗕𝗢𝗧 𝗜𝗦 𝗨𝗦𝗜𝗡𝗚 𝗧𝗛𝗜𝗦 𝗔𝗨𝗧𝗢𝗕𝗢𝗧:https://maori-autobotsite.onrender.com.`;
+𝗧𝗛𝗜𝗦 𝗕𝗢𝗧 𝗜𝗦 𝗨𝗦𝗜𝗡𝗚 𝗧𝗛𝗜𝗦 𝗔𝗨𝗧𝗢𝗕𝗢𝗧:https://autobot-made-by-aljur-pogoy-y7cj.onrender.com.`;
       api.sendMessage(helpMessage, event.threadID, event.messageID);
     } else if (!isNaN(input)) {
       const page = parseInt(input);
