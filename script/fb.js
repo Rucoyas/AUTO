@@ -3,7 +3,7 @@ const cheerio = require("cheerio");
 
 module.exports = {
 	config: {
-		name: "fbdl",
+		name: "fb",
 		version: "1.2",
 		author: "NTKhang",
 		countDown: 5,

@@ -1,36 +1,63 @@
-const axios = require('axios');
-const fs = require('fs-extra');
+const axios = require("axios");
+const fs = require("fs");
+const path = require("path"); // Import the path module
 
-module.exports.config = {
-  name: "remini",
-  version: "1.0.",
-  role: 0,
-  credits: "Mark Hitsuraan",
-  aliases: [],
-  usages: "< reply image >",
-  cd: 2,
-};
+module.exports = {
+  config: {
+    name: "remini",
+    aliases: [],
+    version: "1.0",
+    author: "Who's Deku",
+    countDown: 5,
+    role: 0,
+    shortDescription: "Remini filter",
+    longDescription: "Remini filter",
+    category: "media",
+    guide: "{pn} remini / reply to image or image url",
+  },
 
-module.exports.run = async ({ api, event, args }) => {
-  let pathie = __dirname + `/cache/zombie.jpg`;
-  const { threadID, messageID } = event;
+  onStart: async function ({ api, event, args }) {
+    const { threadID, messageID } = event;
+    
+    // Get the current directory using __dirname
+    const currentDir = path.resolve(__dirname);
 
-  var mark = event.messageReply.attachments[0].url || args.join(" ");
+    if (event.type == "message_reply") {
+      var t = event.messageReply.attachments[0].url;
+    } else {
+      var t = args.join(" ");
+    }
+    
+    try {
+      api.sendMessage("Generating...", threadID, messageID);
 
-  try {
-    api.sendMessage("Generating...", threadID, messageID);
-    const response = await axios.get(`https://markdevs69-1efde24ed4ea.herokuapp.com/api/remini?inputImage=${encodeURIComponent(mark)}`);
-    const processedImageURL = response.data.image_data;
+      const r = await axios.get("https://free-api.ainz-sama101.repl.co/canvas/remini?", {
+        params: {
+          url: encodeURI(t),
+        },
+      });
+      
+      const result = r.data.result.image_data;
+      
+      // Define the path to save the image
+      let ly = path.join(currentDir, "cache", "anime.png");
 
-    const img = (await axios.get(processedImageURL, { responseType: "arraybuffer"})).data;
+      // Fetch and save the image
+      let ly1 = (await axios.get(result, {
+        responseType: "arraybuffer",
+      })).data;
+      fs.writeFileSync(ly, Buffer.from(ly1, "utf-8"));
 
-    fs.writeFileSync(pathie, Buffer.from(img, 'utf-8'));
-
-    api.sendMessage({
-      body: "Processed Image",
-      attachment: fs.createReadStream(pathie)
-    }, threadID, () => fs.unlinkSync(pathie), messageID);
-  } catch (error) {
-    api.sendMessage(`Error processing image: ${error}`, threadID, messageID);
-  };
+      // Send the image as an attachment
+      api.sendMessage(
+        { attachment: fs.createReadStream(ly) },
+        threadID,
+        () => fs.unlinkSync(ly),
+        messageID
+      );
+    } catch (e) {
+      console.log(e.message);
+      return api.sendMessage("Something went wrong.\n" + e.message, threadID, messageID);
+    }
+  },
 };
