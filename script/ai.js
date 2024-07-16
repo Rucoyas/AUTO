@@ -26,7 +26,7 @@ module.exports.run = async function({
       data
     } = await axios.get(`https://soyeon-api.onrender.com/api?prompt=${encodeURIComponent(input)}`);
     const response = data.response;
-    api.sendMessage(response + '\n\ncreate a chat bot using this link https://maori-autobotsite.onrender.com', event.threadID, event.messageID);
+    api.sendMessage(response + '\n\ncreate a chat bot using this link https://gilgmeshautobot.onrender.com', event.threadID, event.messageID);
   } catch (error) {
     api.sendMessage('Di ko po hanap love ☹️🥺.', event.threadID, event.messageID);
   }
