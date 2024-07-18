@@ -24,7 +24,7 @@ module.exports.run = async function ({ api, event, args }) {
         if (!prompt) {
             return api.sendMessage('Please provide a prompt to generate a text response.\nExample: ai What is the meaning of life?', event.threadID, messageID);
         }
-        api.sendMessage('🔍 Searching for an answer to your question...', event.threadID);
+        api.sendMessage('🔍 Please wait master...', event.threadID);
 
         // Delay
         await new Promise(resolve => setTimeout(resolve, 2000)); // Adjust the delay time as needed
